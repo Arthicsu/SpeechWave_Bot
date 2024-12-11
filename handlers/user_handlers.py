@@ -1,3 +1,5 @@
+import os
+
 from aiogram import F, Router
 from aiogram.filters import CommandStart, StateFilter
 from aiogram.types import Message, CallbackQuery
@@ -28,14 +30,3 @@ async def process_language_selection(callback: CallbackQuery, state: FSMContext)
         text=lexicon.get('lang_cng')
     )
     await callback.answer()
-
-
-# @router.message(TranslationState.waiting_for_voice_message, F.content_type == ContentType.VOICE)
-# async def process_voice_message(message: Message, state: FSMContext):
-#     user_data = await state.get_data()
-#     language = user_data.get("language", "ru")  # Дефолтный — русский
-#     lexicon = LANGUAGE_LEXICON.get(language, LEXICON_RU)
-#
-#     await message.answer(
-#         text=f"Ваше голосовое сообщение переведено на {language.upper()}."
-#     )

@@ -1,7 +1,7 @@
 from aiogram import F, Router, Bot, types
-from aiogram.methods.send_invoice import SendInvoice
 from aiogram.types import Message, LabeledPrice, PreCheckoutQuery, ContentType, CallbackQuery
 from keyboards.pay_menu import pay_btn_bldr
+from database.database import add_user
 
 router = Router()
 
@@ -56,15 +56,13 @@ async def process_pre_checkout_query(pre_checkout_query: PreCheckoutQuery, bot: 
     await bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
 
 @router.message(F.content_type == ContentType.SUCCESSFUL_PAYMENT)
-async def process_successful_payment(message: Message):
+async def process_successful_payment(message: Message, bot: Bot):
+    pool = getattr(bot, "db_pool", None)
+    user_id = message.from_user.id
+    username = message.from_user.username
+    await add_user(pool, username=username, id_telegram=user_id, is_premium=True)
+
     total_amount = message.successful_payment.total_amount / 100
     await message.answer(
         text=f"Спасибо за оплату {total_amount} {message.successful_payment.currency}! Ваш премиум-статус активирован."
     )
-
-
-    # admin_id = 123456789
-    # await message.bot.send_message(
-    #     chat_id=admin_id,
-    #     text=f"Пользователь {message.from_user.full_name} (ID: {user_id}) приобрёл премиум-статус."
-    # )
