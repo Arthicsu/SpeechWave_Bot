@@ -1,6 +1,7 @@
 import asyncpg
 import logging
 from typing import Optional, Dict, Any
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,9 @@ async def create_tables(pool):
                 id SERIAL PRIMARY KEY,
                 username TEXT,
                 id_telegram BIGINT UNIQUE NOT NULL,
-                is_premium BOOLEAN DEFAULT FALSE
+                is_premium BOOLEAN DEFAULT FALSE,
+                subscription_start TIMESTAMP DEFAULT NULL,
+                subscription_end TIMESTAMP DEFAULT NULL
             );
         ''')
         logger.info("Таблица users - ок")
@@ -32,13 +35,17 @@ async def create_tables(pool):
         ''')
         logger.info("Таблица statistics - ок")
 
-async def add_user(pool, username: str, id_telegram: int, is_premium: Optional[bool] = False):
+async def add_user(pool, username: str, id_telegram: int, is_premium: bool,
+                   subscription_start: datetime, subscription_end: datetime):
     async with pool.acquire() as conn:
-        await conn.execute('''
-            INSERT INTO users (username, id_telegram, is_premium) 
-            VALUES ($1, $2, $3) 
-            ON CONFLICT (id_telegram) DO NOTHING;
-        ''', username, id_telegram, is_premium)
+        query = '''
+            INSERT INTO users (username, id_telegram, is_premium, subscription_start, subscription_end)
+            VALUES ($1, $2, $3, $4, $5)
+            ON CONFLICT (id_telegram) DO UPDATE 
+            SET is_premium = $3, subscription_start = $4, subscription_end = $5;
+        '''
+        await conn.execute(query, username, id_telegram, is_premium, subscription_start, subscription_end)
+
 
 async def fetch_users(pool):
     async with pool.acquire() as conn:

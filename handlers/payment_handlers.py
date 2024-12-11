@@ -1,5 +1,7 @@
-from aiogram import F, Router, Bot, types
+from aiogram import F, Router, Bot
 from aiogram.types import Message, LabeledPrice, PreCheckoutQuery, ContentType, CallbackQuery
+from datetime import datetime, timedelta
+
 from keyboards.pay_menu import pay_btn_bldr
 from database.database import add_user
 
@@ -60,9 +62,21 @@ async def process_successful_payment(message: Message, bot: Bot):
     pool = getattr(bot, "db_pool", None)
     user_id = message.from_user.id
     username = message.from_user.username
-    await add_user(pool, username=username, id_telegram=user_id, is_premium=True)
+    subscription_start = datetime.now()
+    subscription_end = subscription_start + timedelta(days=30)
+
+    await (add_user
+        (
+        pool,
+        username=username,
+        id_telegram=user_id,
+        is_premium=True,
+        subscription_start=subscription_start,
+        subscription_end=subscription_end
+       )
+    )
 
     total_amount = message.successful_payment.total_amount / 100
     await message.answer(
-        text=f"Спасибо за оплату {total_amount} {message.successful_payment.currency}! Ваш премиум-статус активирован."
+        text=f"Спасибо за оплату {total_amount} {message.successful_payment.currency}! Ваш премиум-статус активирован на 1 месяц."
     )
