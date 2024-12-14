@@ -33,3 +33,10 @@ LEXICON_COMMANDS: dict[str, str] = {
     '/check_premium_status': 'Проверить доступность платных языков',
     '/buy_premium': 'Приобрести премиум подписку на использование для перевода платных языков',
 }
+
+MONTHS_RU = {
+    "January": "января", "February": "февраля", "March": "марта",
+    "April": "апреля", "May": "мая", "June": "июня",
+    "July": "июля", "August": "августа", "September": "сентября",
+    "October": "октября", "November": "ноября", "December": "декабря"
+}

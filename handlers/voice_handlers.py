@@ -15,10 +15,8 @@ def create_salute_client(config: Config) -> SaluteSpeechClient:
 @router.message(F.voice)
 async def handle_voice(message: types.Message, bot: Bot, config: Config):
     salute_client = create_salute_client(config)
-
     user_id = message.from_user.id
     language = user_languages.get(user_id, "ru-RU")
-
     try:
         file = await bot.get_file(message.voice.file_id)
         wav_file = await process_voice_file(file, bot)

@@ -1,13 +1,12 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters.command import Command
-from database.models import fetch_statistics
 from filters.is_admin import IsAdminFilter
 from config_data.config import Config
-
+from database.methods.statistics import fetch_statistics
 router = Router()
 
-@router.message(Command(commands=['stats']), IsAdminFilter)
+@router.message(Command(commands=['/stats']), IsAdminFilter)
 async def show_stats(message: Message, config: Config):
     stats = await fetch_statistics()
     total_users = stats["total_users"]
