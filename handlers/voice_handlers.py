@@ -30,4 +30,4 @@ async def handle_voice(message: types.Message, bot: Bot, config: Config):
 
     except Exception as e:
         logger.error(f"Ошибка при транскрипции: {e}")
-        await message.reply("Произошла ошибка при обработке голосового сообщения.")
+        await message.reply("Упс :( \n Произошла ошибка при обработке голосового сообщения.")

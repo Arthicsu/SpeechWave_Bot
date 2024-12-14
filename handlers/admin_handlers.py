@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters.command import Command
-from database.database import fetch_statistics
+from database.models import fetch_statistics
 from filters.is_admin import IsAdminFilter
 from config_data.config import Config
 

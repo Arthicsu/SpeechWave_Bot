@@ -3,7 +3,7 @@ from aiogram.types import Message, LabeledPrice, PreCheckoutQuery, ContentType, 
 from datetime import datetime, timedelta
 
 from keyboards.pay_menu import pay_btn_bldr
-from database.database import add_user
+from database.models import add_user
 
 router = Router()
 

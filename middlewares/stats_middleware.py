@@ -1,6 +1,6 @@
 from aiogram import BaseMiddleware
 from aiogram.types import Message
-from database.database import update_statistics
+# from database.models import update_statistics
 import logging
 
 logger = logging.getLogger(__name__)

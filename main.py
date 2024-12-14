@@ -7,7 +7,7 @@ from config_data.config import Config, load_config
 from handlers import other_handlers, user_handlers, admin_handlers, payment_handlers, voice_handlers
 from middlewares.config_middleware import ConfigMiddleware
 from middlewares.stats_middleware import StatisticsMiddleware
-from database.database import create_tables, get_pool
+from database.models import create_tables, get_pool
 
 
 logger = logging.getLogger(__name__)
