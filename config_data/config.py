@@ -11,9 +11,15 @@ class SaluteSpeech:
     credentials: str
 
 @dataclass
+class YandexTranslate:
+    iam_token: str
+    folder_id: str
+
+@dataclass
 class Config:
     tg_bot: TgBot
     salute_speech: SaluteSpeech
+    yandex_translate: YandexTranslate
 
 def load_config(path: str | None = None) -> Config:
     env = Env()
@@ -25,5 +31,10 @@ def load_config(path: str | None = None) -> Config:
         ),
         salute_speech=SaluteSpeech(
             credentials=env('SALUTE_CREDENTIALS')
+        ),
+        yandex_translate=YandexTranslate(
+            iam_token=env('YANDEX_IAM_TOKEN'),
+            folder_id=env('YANDEX_FOLDER_ID')
         )
     )
+
