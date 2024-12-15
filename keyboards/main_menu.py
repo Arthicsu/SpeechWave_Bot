@@ -1,5 +1,5 @@
 from aiogram.types import KeyboardButton, InlineKeyboardButton
-from aiogram.utils.keyboard import ReplyKeyboardBuilder,InlineKeyboardBuilder
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from callback_factory.callback_factory import LanguageCallbackFactory
 
 menu_kb_builder = ReplyKeyboardBuilder()
@@ -10,36 +10,58 @@ menu_kb_builder.row(
 )
 keyboard = menu_kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
-lang_kb_builder = InlineKeyboardBuilder()
-
-lang_kb_builder.row(
+# Клавиатура для выбора языка транскрибации
+transcription_lang_kb_builder = InlineKeyboardBuilder()
+transcription_lang_kb_builder.row(
     InlineKeyboardButton(
-        text="Русский",
+        text="Russian",
         callback_data=LanguageCallbackFactory(lang_code="ru").pack()
     ),
     InlineKeyboardButton(
-        text="Английский",
+        text="English",
         callback_data=LanguageCallbackFactory(lang_code="en").pack()
     ),
     InlineKeyboardButton(
-        text="Казахский",
+        text="Kazakh",
         callback_data=LanguageCallbackFactory(lang_code="kz").pack()
     ),
     width=3
 )
-lang_kb_builder.row(
+
+transcription_lang_kb = transcription_lang_kb_builder.as_markup()
+
+# Клавиатура для выбора языка перевода
+translation_lang_kb_builder = InlineKeyboardBuilder()
+translation_lang_kb_builder.row(
     InlineKeyboardButton(
-        text="Немецкий",
-        callback_data=LanguageCallbackFactory(lang_code="de").pack()
+        text="Russian",
+        callback_data=LanguageCallbackFactory(lang_code="ru_translate").pack()
     ),
     InlineKeyboardButton(
-        text="Испанский",
-        callback_data=LanguageCallbackFactory(lang_code="es").pack()
+        text="English",
+        callback_data=LanguageCallbackFactory(lang_code="en_translate").pack()
     ),
     InlineKeyboardButton(
-        text="Французский",
-        callback_data=LanguageCallbackFactory(lang_code="fr").pack()
+        text="Kazakh",
+        callback_data=LanguageCallbackFactory(lang_code="kz_translate").pack()
     ),
     width=3
 )
-inline_keyboard = lang_kb_builder.as_markup()
+translation_lang_kb_builder.row(
+    InlineKeyboardButton(
+        text="German",
+        callback_data=LanguageCallbackFactory(lang_code="de_translate").pack()
+    ),
+    InlineKeyboardButton(
+        text="Spanish",
+        callback_data=LanguageCallbackFactory(lang_code="es_translate").pack()
+    ),
+    InlineKeyboardButton(
+        text="French",
+        callback_data=LanguageCallbackFactory(lang_code="fr_translate").pack()
+    ),
+    width=3
+)
+translation_lang_kb = translation_lang_kb_builder.as_markup()
+
+
