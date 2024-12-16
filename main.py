@@ -2,6 +2,8 @@ import asyncio, logging
 import locale
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
+
+from database.methods.statistics import initialize_statistics
 from filters.is_admin import IsAdminFilter
 from config_data.config import Config, load_config
 from handlers import user_handlers, admin_handlers, payment_handlers, voice_handlers, other_handlers
@@ -27,6 +29,7 @@ async def main():
     dp = Dispatcher(storage=storage)
     pool = await get_pool()
     await create_tables(pool)
+    await initialize_statistics(pool, bot.id)
     setattr(bot, "db_pool", pool)
     dp.update.middleware(ConfigMiddleware(config))
     dp.update.middleware(StatisticsMiddleware(pool))
@@ -34,7 +37,8 @@ async def main():
     dp.include_router(payment_handlers.router)
     dp.include_router(voice_handlers.router)
     dp.include_router(admin_handlers.router)
-    dp.message.filter(IsAdminFilter(config))
+    admin_ids = config.tg_bot.admin_ids  # Уже список, преобразование не требуется
+    dp.message.filter(IsAdminFilter(admin_ids=admin_ids))
     # dp.include_router(other_handlers.router)
     await dp.start_polling(bot)
 

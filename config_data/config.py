@@ -27,7 +27,7 @@ def load_config(path: str | None = None) -> Config:
     return Config(
         tg_bot=TgBot(
             token=env('BOT_TOKEN'),
-            admin_ids=list(map(int, env.list('ADMIN_IDS')))
+            admin_ids=[int(admin_id.strip()) for admin_id in env.list('ADMIN_IDS')]
         ),
         salute_speech=SaluteSpeech(
             credentials=env('SALUTE_CREDENTIALS')
@@ -37,4 +37,3 @@ def load_config(path: str | None = None) -> Config:
             folder_id=env('YANDEX_FOLDER_ID')
         )
     )
-
