@@ -46,5 +46,5 @@ LANG_LEXICON = {
 
 LEXICON_COMMANDS: dict[str, str] = {
     '/start': 'Стартуем бота',
-    '/admin': 'Проверить доступность платных языков',
+    '/admin': 'админ-панель',
 }
