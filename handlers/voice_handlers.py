@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 config = load_config()
 yandex_translate = create_yandex_translate(config)
 
-router = Router()
+user_router = Router()
 
-@router.message(F.voice)
+@user_router.message(F.voice)
 async def handle_voice(message: types.Message, bot: Bot, config: Config):
     salute_client = create_salute_client(config)
     user_id = message.from_user.id    # Получаем язык транскрибации и перевода
